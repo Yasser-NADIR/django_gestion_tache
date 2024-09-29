@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajout nouvelle famille</title>
+</head>
+<body>
+    <h1>Ajout nouvelle famille user</h1>
+    <a href="">Maintenance famille users</a>
+    <br>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">modifier</button>
+    </form>
+</body>
+</html>

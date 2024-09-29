@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gestion famille users</title>
+    <style>
+        table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+        th,td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
+        th {
+                    background-color: #f2f2f2;
+                    text-align: left;
+                }
+        tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+        tr:hover {
+                    background-color: #ddd;
+                }
+    </style>
+</head>
+<body>
+    <a href="{% url 'home' %}">menu principale</a>
+    <h1>maintenance famille users</h1>
+    <a href="{% url 'add_f_user' %}">ajout nouvelle famille</a>
+    <br><br>
+    
+    <h2>Search famille users</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">find</button>
+    </form>
+    <a href="{% url 'download_f_users_list_pdf' %}">liste</a>
+    <a href="{% url 'download_f_users_csv' %}">svc</a>
+    <a href="{% url 'download_f_users_html' %}">html</a>
+    <table>
+        <tr>
+            <th>labelle famille</th>
+            <th>coefficient</th>
+            <th>remarque</th>
+            <th>action</th>
+        </tr>
+        {% for user in f_users %}
+        <tr>
+            <td>{{ user.libelle_famille }}</td>
+            <td>{{ user.coefficient }}</td>
+            <td>{{ user.remarques }}</td>
+            <td><a href="{% url 'download_f_user_pdf' user.id_f_user %}">impr</a> | <a href="{% url 'edit_f_user' user.id_f_user%}">modifier</a> | <a href="{% url 'delete_f_user' user.id_f_user %}">supprimer</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

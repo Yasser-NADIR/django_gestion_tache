@@ -1,0 +1,4 @@
+django
+mariadb
+mysqlclient
+xhtml2pdf
