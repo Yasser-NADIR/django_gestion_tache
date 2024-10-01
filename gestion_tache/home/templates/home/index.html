@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home page</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %} home page {% endblock %}
+{% block body %}
     <p>Gestion de maintenance</p>
+    {% if perms.famille_user.view_fuser %}
     <a href="{% url 'f_users' %}">gestion de famille users</a>
+    {% endif %}
     <a href="">gestion de users</a>
     <a href="">gestion de taches</a>
     <a href="">gestion de historiques de taches</a>
-</body>
-</html>
+{% endblock %}

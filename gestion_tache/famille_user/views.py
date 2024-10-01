@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import permission_required, login_required
 from .models import FUser
 from .forms import FUserForm
 import csv
 from xhtml2pdf import pisa
 from io import BytesIO
 
+
+@permission_required('famille_user.view_fuser')
 def index(request):
+    print(request.user.has_perm('famille_user.view_fuser'))
     if request.method == 'POST':
         form = FUserForm(request.POST)
         if form.is_valid():
@@ -24,6 +28,7 @@ def index(request):
         f_users = FUser.objects.all()
     return render(request, 'f_user/index.html', {'f_users': f_users, 'form': form})
 
+@permission_required('famille_user.add_fuser')
 def add_f_user(request):
     if request.method == 'POST':
         form = FUserForm(request.POST)
@@ -37,6 +42,7 @@ def add_f_user(request):
     form = FUserForm()
     return render(request, 'f_user/add_f_user.html', {'form': form})
 
+@permission_required('famille_user.change_fuser')
 def edit_f_user(request, id):
     f_user = FUser.objects.get(id_f_user=id)
     if request.method == 'POST':
@@ -49,10 +55,12 @@ def edit_f_user(request, id):
     form = FUserForm(instance=f_user)
     return render(request, 'f_user/edit_f_user.html', {'form': form})
 
+@permission_required('famille_user.delete_fuser')
 def delete_f_user(request, id):
     FUser.objects.get(id_f_user=id).delete()
     return redirect('f_users')
 
+@permission_required('famille_user.view_fuser')
 def download_f_users_html(request):
     f_users = FUser.objects.all()
     html_content = render_to_string('f_user/f_user_list.html', {'users': f_users})
@@ -60,6 +68,7 @@ def download_f_users_html(request):
     responce['Content-Disposition'] = 'attachement; filename="f_users.html"'
     return responce
 
+@permission_required('famille_user.view_fuser')
 def download_f_users_csv(request):
     f_users = FUser.objects.all()
 
@@ -72,6 +81,7 @@ def download_f_users_csv(request):
         writer.writerow([user.id_f_user, user.libelle_famille, user.coefficient, user.remarques])
     return responce
 
+@permission_required('famille_user.view_fuser')
 def download_f_user_pdf(request, id):
     f_user = FUser.objects.get(id_f_user=id)
     html_content = render_to_string('f_user/f_user_pdf.html', {'user': f_user})
@@ -81,6 +91,7 @@ def download_f_user_pdf(request, id):
     responce['Content-Disposition'] = 'attachement; filename=f_users.pdf'
     return responce
 
+@permission_required('famille_user.view_fuser')
 def download_f_users_list_pdf(request):
     f_users = FUser.objects.all()
     html_content = render_to_string('f_user/f_user_list_pdf.html', {'users': f_users})
